@@ -3,6 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\FilmsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use DateTime;
+use Symfony\Component\Validator\Constraints as assert;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,6 +23,7 @@ class Films
     private $id;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $title;
@@ -26,6 +32,28 @@ class Films
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $director;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $duree;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Seance::class, mappedBy="films")
+     */
+    private $seance;
+
+
+    public function __construct()
+    {
+        $this->seance = new ArrayCollection();
+        $this->seances = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -54,5 +82,67 @@ class Films
         $this->director = $director;
 
         return $this;
+    }
+
+    public function getDuree(): ?int
+    {
+        return $this->duree;
+    }
+
+    public function setDuree(?int $duree): self
+    {
+        $this->duree = $duree;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getSeance(): Collection
+    {
+        return $this->seance;
+    }
+
+    public function addSeance(Seance $seance): self
+    {
+        if (!$this->seance->contains($seance)) {
+            $this->seance[] = $seance;
+            $seance->setFilms($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeance(Seance $seance): self
+    {
+        if ($this->seance->removeElement($seance)) {
+            // set the owning side to null (unless already changed)
+            if ($seance->getFilms() === $this) {
+                $seance->setFilms(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getSeances(): Collection
+    {
+        return $this->seances;
     }
 }

@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+{% block body %}
+	<div>
+	<h1>	Liste des films à l'écran</h1></div>
+	{% if films|length ==0 %}
+		pas de films disponibles
+	{% endif %}
+	<table class="table">
+		{% for film in films%}
+		<tr>
+		<td>
+			
+			{{film.getTitle()}}
+	
+	
+	</td>
+	<td>
+                    <a href="{{ path('film_show', {'id': film.id}) }}">show</a>
+                    <a href="{{ path('update_film', {'id': film.id}) }}">edit</a>
+		
+    	</td>
+	</tr>
+		{% endfor %}
+		</table>
+		  <a href="{{ path('create_film') }}">Create new</a>
+{% endblock %}

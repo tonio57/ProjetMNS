@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des Séances</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Date</th>
+                <th>Langue</th>
+            
+                <th>Film</th>
+                <th>Salle</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for seance in seances %}
+            <tr>
+            
+                <td>{{ seance.dateDebut ? seance.dateDebut|date('Y-m-d H:i') : '' }}</td>
+                <td>{{ seance.langue }}</td>
+                <td>{{ seance.films.title }}</td>
+                <td>{{ seance.getSalle().Numero }}</td>
+                <td>
+                    <a href="{{ path('seance_show', {'id': seance.id}) }}">show</a>
+                    <a href="{{ path('seance_edit', {'id': seance.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('seance_new') }}">Create new</a>
+{% endblock %}

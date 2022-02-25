@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Film{% endblock %}
+
+{% block body %}
+    <h1>Film</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ film.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ film.title }}</td>
+            </tr>
+                        <tr>
+                <th>Réalisateur</th>
+                <td>{{ film.director }}</td>
+            </tr>
+              </tr>
+                        <tr>
+                <th>Durée</th>
+                <td>{{ film.duree }} min</td>
+            </tr>
+            <tr>
+                <th>CreateAt</th>
+                <td>{{ film.createdAt ? film.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+              <tr>
+                <th>Séances</th>
+                
+                {% if film.getSeance()|length ==0%}
+                <tr>
+		          <td>  pas de Séances disponibles</td>
+                    </tr>
+	            {% endif %}
+                
+                {% for seance in film.getSeance()%}
+                <tr>
+                 <td>{{seance.dateDebut ? seance.dateDebut|date('Y-m-d H:i') : ''}}</td>
+                <td>en {{seance.langue}}</td>
+                  <td>en salle {{seance.getSalle().numero}} ({{seance.getSalle().nom}})</td>
+                </tr>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table> 
+
+    <a href="{{ path('ListingFilms') }}">back to list</a>
+
+    <a href="{{ path('update_film', {'id': film.id}) }}">edit</a>
+
+    {{ include('films/_delete_form.html.twig') }}
+{% endblock %}

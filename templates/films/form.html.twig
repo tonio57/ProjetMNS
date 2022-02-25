@@ -1,0 +1,32 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}CINEMA TONIO{% endblock %}
+
+{% block body %}
+ {% if (isEditor) %}
+        <div>Formualire de modification de film</div>
+    {% else %}
+        <div>Formualire d'ajout de film</div>
+    {% endif %}
+    {{ form_start(form) }}
+
+    <div class='mb-10'>
+        {{ form_row(form.title, { 'label': 'Title :' }) }}
+    </div>
+
+    <div class='mb-10'>
+        {{ form_row(form.director, { 'label': 'Réalisateur :' }) }}
+    </div>
+     <div class='mb-10'>
+        {{ form_row(form.duree, { 'label': 'Durée en minutes :' }) }}
+    </div>
+     <div>
+        {% if (isEditor) %}
+            {{ form_row(form.save, { 'label': 'Edit :' }) }}
+        {% else %}
+            {{ form_row(form.save, { 'label': 'Save :' }) }}
+        {% endif %}
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

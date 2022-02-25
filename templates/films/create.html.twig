@@ -1,0 +1,10 @@
+{% extends "base.html.twig"%}
+{% block title %}
+	{% if (isEditor) %}
+		modifier film
+	{% else %}
+		Ajout film
+	{% endif %}
+{% endblock %}
+{% block body %}
+	{{ form(form) }}{% endblock %}
